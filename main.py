@@ -37,6 +37,13 @@ class TutorPython:
             ),
         }
 
+    def explicar_concepto(self, mensaje_normalizado):
+        for tema, explicacion in self.temas.items():
+            if tema.replace("_", " ") in mensaje_normalizado or any(palabra in mensaje_normalizado for palabra in tema.split("_")):
+                return explicacion
+        temas_disponibles = ", ".join(tema.replace("_", " ") for tema in self.temas.keys())
+        return f"No encontré ese tema. Los temas disponibles son: {temas_disponibles}."
+
     def responder(self, mensaje):
         mensaje_normalizado = str(mensaje).strip().lower()
         saludos = ("hola", "buenos dias", "buenas tardes", "buenas", "hi")
@@ -48,14 +55,8 @@ class TutorPython:
             respuesta = "¡Hola! Soy tu tutor de Python. ¿En qué tema te gustaría aprender hoy?"
         elif any(palabra in mensaje_normalizado for palabra in despedidas):
             respuesta = "¡Hasta luego! Recuerda que estoy aquí para ayudarte con Python."
-        elif "lista" in mensaje_normalizado or "diccionario" in mensaje_normalizado or "estructura" in mensaje_normalizado:
-            respuesta = self.temas["estructura_de_datos"]
-        elif "funcion" in mensaje_normalizado:
-            respuesta = self.temas["funciones"]
-        elif "clase" in mensaje_normalizado:
-            respuesta = self.temas["clases"]
-        elif "for" in mensaje_normalizado or "iteracion" in mensaje_normalizado or "iteraciones" in mensaje_normalizado:
-            respuesta = self.temas["for"]
+        elif "explicar" in mensaje_normalizado or "explicame"  in mensaje_normalizado or "explicas" in mensaje_normalizado:
+            respuesta = self.explicar_concepto(mensaje_normalizado)
         else:
             respuesta = "No tengo información sobre ese tema. Puedes preguntarme por estructuras de datos, funciones, clases o for."
 
@@ -73,3 +74,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
