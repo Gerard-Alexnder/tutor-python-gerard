@@ -14,9 +14,61 @@ Respuesta: las respuestas a las preguntas ya estarán almacenadas en un dicciona
 """
 
 
+class TutorPython:
+    def __init__(self):
+        self.historial = []
+        self.temas = {
+            "estructura_de_datos": (
+                "Las estructuras de datos en Python son formas de guardar información. "
+                "Las listas permiten ordenar elementos y los diccionarios guardan datos con clave y valor. "
+                "Ejemplo: notas = [8, 9, 10]; persona = {'nombre': 'Ana', 'edad': 20}."
+            ),
+            "funciones": (
+                "Las funciones permiten reutilizar bloques de código y organizar mejor el programa. "
+                "Ejemplo: def saludar(nombre): return f'Hola, {nombre}'; saludar('Luis')."
+            ),
+            "clases": (
+                "Las clases sirven para crear objetos con atributos y métodos. "
+                "Ejemplo: class Persona: def __init__(self, nombre): self.nombre = nombre; p = Persona('Ana')."
+            ),
+            "for": (
+                "El ciclo for recorre elementos de una lista o diccionario para procesarlos uno a uno. "
+                "Ejemplo: for numero in [1, 2, 3]: print(numero) y for clave, valor in {'a': 1, 'b': 2}.items(): print(clave, valor)."
+            ),
+        }
+
+    def responder(self, mensaje):
+        mensaje_normalizado = str(mensaje).strip().lower()
+        saludos = ("hola", "buenos dias", "buenas tardes", "buenas", "hi")
+        despedidas = ("adios", "adiós", "hasta luego", "bye", "chau")
+
+        self.historial.append({"estudiante": mensaje_normalizado})
+
+        if any(palabra in mensaje_normalizado for palabra in saludos):
+            respuesta = "¡Hola! Soy tu tutor de Python. ¿En qué tema te gustaría aprender hoy?"
+        elif any(palabra in mensaje_normalizado for palabra in despedidas):
+            respuesta = "¡Hasta luego! Recuerda que estoy aquí para ayudarte con Python."
+        elif "lista" in mensaje_normalizado or "diccionario" in mensaje_normalizado or "estructura" in mensaje_normalizado:
+            respuesta = self.temas["estructura_de_datos"]
+        elif "funcion" in mensaje_normalizado:
+            respuesta = self.temas["funciones"]
+        elif "clase" in mensaje_normalizado:
+            respuesta = self.temas["clases"]
+        elif "for" in mensaje_normalizado or "iteracion" in mensaje_normalizado or "iteraciones" in mensaje_normalizado:
+            respuesta = self.temas["for"]
+        else:
+            respuesta = "No tengo información sobre ese tema. Puedes preguntarme por estructuras de datos, funciones, clases o for."
+
+        self.historial.append({"tutor": respuesta})
+        return respuesta
+
 
 def main():
-    print("Hello from tutor-python!")
+    tutor = TutorPython()
+    print(tutor.responder("hola"))
+    print(tutor.responder("¿Me explicas funciones?"))
+    print(tutor.responder("hasta luego"))
+    print(tutor.historial)
 
 
 if __name__ == "__main__":
