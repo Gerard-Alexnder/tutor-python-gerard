@@ -140,12 +140,24 @@ class TutorPython:
         return respuesta
 
 
+    def mostrar_historial(self):
+        for quien, texto in self.historial:
+            print(f"{quien} : {texto}")
+
+    def iniciar_conversacion(tutor):
+        print("Tutor de Python -  escribe 'salir' para terminar la conversacion\n")
+        while true:
+            mensaje = input("Tu: ")
+            respuesta = tutor.responder(mensaje)
+            print(f"Tutor: {respuesta}\n")
+            if "adios" in mensaje.lower() or "salir" in mensaje.lower():
+                break
+            print("---Historial de la conversacion---")
+            tutor.mostrar_historial()
+
 def main():
     tutor = TutorPython()
-    print(tutor.responder("hola"))
-    print(tutor.responder("¿Me explicas funciones?"))
-    print(tutor.responder("hasta luego"))
-    print(tutor.historial)
+    iniciar_conversacion(tutor)
 
 
 if __name__ == "__main__":
