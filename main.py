@@ -98,10 +98,23 @@ class TutorPython:
         else:
             acerto = respuesta_usuario.casefold() == datos["respuesta"].casefold()
 
-        self.temas_dominados[tema_encontrado] = acerto
+        clave_resultado = tema_encontrado
+        numero_intento = 2
+        while clave_resultado in self.temas_dominados:
+            clave_resultado = f"{tema_encontrado}_{numero_intento}"
+            numero_intento += 1
+        self.temas_dominados[clave_resultado] = acerto
         if acerto:
             return f"¡Correcto! Has acertado la pregunta sobre {tema_encontrado.replace('_', ' ')}."
         return f"No es correcto. La respuesta era: {datos['respuesta']}."
+
+    def mostrar_progreso(self):
+        if not self.temas_dominados:
+            return "Todavía no has intentado ninguna pregunta."
+
+        correctas = sum(self.temas_dominados.values())
+        intentadas = len(self.temas_dominados)
+        return f"Has respondido correctamente {correctas} de {intentadas} preguntas."
 
     def responder(self, mensaje):
         mensaje_normalizado = str(mensaje).strip().lower()
@@ -114,6 +127,8 @@ class TutorPython:
             respuesta = "¡Hola! Soy tu tutor de Python. ¿En qué tema te gustaría aprender hoy?"
         elif any(palabra in mensaje_normalizado for palabra in despedidas):
             respuesta = "¡Hasta luego! Recuerda que estoy aquí para ayudarte con Python."
+        elif "progreso" in mensaje_normalizado:
+            respuesta = self.mostrar_progreso()
         elif "pregunta" in mensaje_normalizado:
             respuesta = self.hacer_pregunta(mensaje_normalizado)
         elif "explicar" in mensaje_normalizado or "explicame"  in mensaje_normalizado or "explicas" in mensaje_normalizado:
