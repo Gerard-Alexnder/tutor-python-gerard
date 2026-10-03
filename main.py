@@ -89,14 +89,15 @@ class TutorPython:
             return "Indica el tema de la pregunta: lista, estructuras de datos, funciones, clases o for."
 
         datos = self.temas[tema_encontrado]
-        respuesta_usuario = input(datos["pregunta"]).strip()
+        respuesta_estudiante = input(datos["pregunta"]).strip()
         if datos["tipo"] == "numero":
             try:
-                acerto = int(respuesta_usuario) == int(datos["respuesta"])
+                respuesta_estudiante = int(respuesta_estudiante)
             except ValueError:
-                acerto = False
+                return "Por favor, responde con un número entero."
+            acerto = respuesta_estudiante == int(datos["respuesta"])
         else:
-            acerto = respuesta_usuario.casefold() == datos["respuesta"].casefold()
+            acerto = respuesta_estudiante.casefold() == datos["respuesta"].casefold()
 
         clave_resultado = tema_encontrado
         numero_intento = 2
@@ -141,12 +142,13 @@ class TutorPython:
 
 
     def mostrar_historial(self):
-        for quien, texto in self.historial:
-            print(f"{quien} : {texto}")
+        for registro in self.historial:
+            for quien, texto in registro.items():
+                print(f"{quien} : {texto}")
 
     def iniciar_conversacion(tutor):
         print("Tutor de Python -  escribe 'salir' para terminar la conversacion\n")
-        while true:
+        while True:
             mensaje = input("Tu: ")
             respuesta = tutor.responder(mensaje)
             print(f"Tutor: {respuesta}\n")
@@ -157,7 +159,7 @@ class TutorPython:
 
 def main():
     tutor = TutorPython()
-    iniciar_conversacion(tutor)
+    tutor.iniciar_conversacion()
 
 
 if __name__ == "__main__":
